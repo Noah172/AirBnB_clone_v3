@@ -74,3 +74,17 @@ class DBStorage:
     def close(self):
         """call remove() method on the private session attribute"""
         self.__session.remove()
+
+    #task 3 Air BnB - RESTful API
+    def get(self, cls, id):
+        """ returns the name and its ID, or None if not found """
+        if self.all(cls):
+            return self.all(cls).get(cls + '.' + id)
+        return None
+
+    def count(self, cls=None):
+        if cls is not None:
+            return len(self.all(cls))
+        else:
+            return len(self.all())
+
