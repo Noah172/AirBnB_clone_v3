@@ -13,7 +13,7 @@ from models.state import State
 from models.user import User
 
 classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
-           "Place": Place, "Review": Review, "State": State, "User": User}
+        "Place": Place, "Review": Review, "State": State, "User": User}
 
 
 class FileStorage:
@@ -64,6 +64,19 @@ class FileStorage:
             key = obj.__class__.__name__ + '.' + obj.id
             if key in self.__objects:
                 del self.__objects[key]
+
+    #task 3 Air BnB clone - RESTful API
+    def get(self, cls, id):
+        """ returns the name and its ID, or None if not found """
+        if self.all(cls):
+            return self.all(cls).get(cls + '.' + id)
+        return None
+
+    def count(self, cls=None):
+        if cls is not None:
+            return len(self.all(cls))
+        else:
+            return len(self.all())
 
     def close(self):
         """call reload() method for deserializing the JSON file to objects"""
