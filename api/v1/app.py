@@ -15,7 +15,7 @@ def close_session(resp_or_excep):
 
 @app.errorhandler(404)
 def not_found(err):
-    return jsonify(('error', 'Not found')), 404
+    return jsonify(error='Not found'), 404
 
 
 if __name__ == '__main__':
