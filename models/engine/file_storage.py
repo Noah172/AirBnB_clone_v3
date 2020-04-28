@@ -67,16 +67,28 @@ class FileStorage:
 
     #task 3 Air BnB clone - RESTful API
     def get(self, cls, id):
-        """ returns the name and its ID, or None if not found """
-        if self.all(cls):
-            return self.all(cls).get(cls + '.' + id)
-        return None
+        """ method that returns the name and its ID, or None if not found
+            cls: class name
+            id: string representing the object ID
+        """
+        if cls and id:
+            if type(cls) == str:
+                cls = eval(cls)
+            key  = cls.__name__ + '.' + id
+            object_list = self.all()
+            if key in object_list:
+                return object_list[key]
+            return None
 
     def count(self, cls=None):
-        if cls is not None:
-            return len(self.all(cls))
-        else:
+        """ method that returns the number of objects in storage matching the given class name.
+            If no name is passed, returns the count of all objects in storage.
+            cls: class name (optional)
+        """
+        if cls is None:
             return len(self.all())
+        else:
+            return len(self.all(cls))
 
     def close(self):
         """call reload() method for deserializing the JSON file to objects"""
