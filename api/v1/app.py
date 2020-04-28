@@ -10,7 +10,6 @@ app.register_blueprint(app_views, url_prefix='/api/v1')
 
 @app.teardown_appcontext
 def close_session(resp_or_excep):
-    print(app.url_map)
     storage.close()
 
 
