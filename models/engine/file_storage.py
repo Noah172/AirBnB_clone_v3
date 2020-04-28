@@ -13,7 +13,7 @@ from models.state import State
 from models.user import User
 
 classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
-        "Place": Place, "Review": Review, "State": State, "User": User}
+           "Place": Place, "Review": Review, "State": State, "User": User}
 
 
 class FileStorage:
@@ -65,7 +65,7 @@ class FileStorage:
             if key in self.__objects:
                 del self.__objects[key]
 
-    #task 3 Air BnB clone - RESTful API
+    "task 3 Air BnB clone - RESTful API"
     def get(self, cls, id):
         """ method that returns the name and its ID, or None if not found
             cls: class name
@@ -74,15 +74,16 @@ class FileStorage:
         if cls and id:
             if type(cls) == str:
                 cls = eval(cls)
-            key  = cls.__name__ + '.' + id
+            key = cls.__name__ + '.' + id
             object_list = self.all()
             if key in object_list:
                 return object_list[key]
             return None
 
     def count(self, cls=None):
-        """ method that returns the number of objects in storage matching the given class name.
-            If no name is passed, returns the count of all objects in storage.
+        """ method that returns the number of objects in storage matching the
+            en class name. If no name is passed, returns the count of all
+            objects in storage.
             cls: class name (optional)
         """
         if cls is None:
