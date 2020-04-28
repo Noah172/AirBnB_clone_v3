@@ -65,6 +65,32 @@ class FileStorage:
             if key in self.__objects:
                 del self.__objects[key]
 
+    "task 3 Air BnB clone - RESTful API"
+    def get(self, cls, id):
+        """ method that returns the name and its ID, or None if not found
+            cls: class name
+            id: string representing the object ID
+        """
+        if cls and id:
+            if type(cls) == str:
+                cls = eval(cls)
+            key = cls.__name__ + '.' + id
+            object_list = self.all()
+            if key in object_list:
+                return object_list[key]
+            return None
+
+    def count(self, cls=None):
+        """ method that returns the number of objects in storage matching the
+            en class name. If no name is passed, returns the count of all
+            objects in storage.
+            cls: class name (optional)
+        """
+        if cls is None:
+            return len(self.all())
+        else:
+            return len(self.all(cls))
+
     def close(self):
         """call reload() method for deserializing the JSON file to objects"""
         self.reload()
