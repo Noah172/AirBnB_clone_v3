@@ -75,7 +75,7 @@ class DBStorage:
         """call remove() method on the private session attribute"""
         self.__session.remove()
 
-    #task 3 Air BnB - RESTful API
+    'task 3 Air BnB - RESTful API'
     def get(self, cls, id):
         """ returns the name and its ID, or None if not found
             cls: class name
@@ -104,4 +104,3 @@ class DBStorage:
                 cl = self.all()
                 c += len(cl)
         return c
-
