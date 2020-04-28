@@ -77,14 +77,31 @@ class DBStorage:
 
     #task 3 Air BnB - RESTful API
     def get(self, cls, id):
-        """ returns the name and its ID, or None if not found """
-        if self.all(cls):
-            return self.all(cls).get(cls + '.' + id)
+        """ returns the name and its ID, or None if not found
+            cls: class name
+            id: string representing the object ID
+        """
+        if cls and id:
+            if type(cls) is str:
+                cls = eval(cls)
+            object_list = self.__session.query(cls).all()
+            for obj_get in object_list:
+                if obj_get.id == id:
+                    return obj_get
         return None
 
     def count(self, cls=None):
+        """
+        cls: class name (optional)
+        Returns the number of objects in storage matching the given class name.
+        If no name is passed, returns the count of all objects in storage.
+        """
+        c = 0
         if cls is not None:
             return len(self.all(cls))
         else:
-            return len(self.all())
+            for current_class in classes:
+                cl = self.all()
+                c += len(cl)
+        return c
 
