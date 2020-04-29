@@ -7,7 +7,8 @@ from models.city import City
 from models import storage
 
 
-@app_views.route('/states/<state_id>/cities', methods=['GET'])
+@app_views.route('/states/<state_id>/cities', methods=['GET'],
+                 strict_slashes=False)
 def get_cities(state_id=None):
     """
     Takes a state id and queries storare for cities that belong to that state
@@ -19,46 +20,11 @@ def get_cities(state_id=None):
         list of cities by state in json format
     """
     state = storage.get(State, state_id)
-    cities = []
-    for city in state.cities:
-        cities.append(city.to_dict())
-    return jsonify(cities)
-
-
-@app_views.route('/cities/<city_id>', methods=['GET'])
-def get_city(city_id=None):
-    """
-    Takes an id and queries storage for a city with that id
-
-    Args:
-        city_id: id of city to find
-
-    Returns:
-        City data in json format
-    """
-    city = storage.get(City, city_id)
-    if city:
-        return jsonify(city.to_dict())
-    else:
-        abort(404)
-
-
-@app_views.route('/cities/<city_id>', methods=['DELETE'])
-def del_city(city_id=None):
-    """
-    Takes an id and if a city with that id is found deletes it
-
-    Args:
-        city_id: id of city to delete
-
-    Returns:
-        empty json with status code 200
-    """
-    city = storage.get(City, city_id)
-    if city:
-        storage.delete(city)
-        storage.save()
-        return jsonify({})
+    if state:
+        cities = []
+        for city in state.cities:
+            cities.append(city.to_dict())
+        return jsonify(cities)
     else:
         abort(404)
 
@@ -94,7 +60,48 @@ def post_city(state_id=None):
         return 'Missing name', 404
 
 
-@app_views.route('/cities/<city_id>', methods=['PUT'])
+@app_views.route('/cities/<city_id>', methods=['GET'],
+                 strict_slashes=False)
+def get_city(city_id=None):
+    """
+    Takes an id and queries storage for a city with that id
+
+    Args:
+        city_id: id of city to find
+
+    Returns:
+        City data in json format
+    """
+    city = storage.get(City, city_id)
+    if city:
+        return jsonify(city.to_dict())
+    else:
+        abort(404)
+
+
+@app_views.route('/cities/<city_id>', methods=['DELETE'],
+                 strict_slashes=False)
+def del_city(city_id=None):
+    """
+    Takes an id and if a city with that id is found deletes it
+
+    Args:
+        city_id: id of city to delete
+
+    Returns:
+        empty json with status code 200
+    """
+    city = storage.get(City, city_id)
+    if city:
+        storage.delete(city)
+        storage.save()
+        return jsonify({})
+    else:
+        abort(404)
+
+
+@app_views.route('/cities/<city_id>', methods=['PUT'],
+                 strict_slashes=False)
 def put_city(city_id=None):
     """
         Takes an id, queries the storage for a city with that id and if found,
