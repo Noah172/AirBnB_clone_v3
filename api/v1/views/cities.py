@@ -19,13 +19,13 @@ def get_cities(state_id=None):
         list of cities by state in json format
     """
     state = storage.get(State, state_id)
-    if state:
-        cities = []
-        for city in state.cities:
-            cities.append(city.to_dict())
-        return jsonify(cities)
-    else:
+    if not state:
         abort(404)
+    cities = []
+    for city in storage.all('City').values():
+        if state_id == city.state_id:
+            cities.append(city.to_dict())
+    return jsonify(cities)
 
 
 @app_views.route('/states/<state_id>/cities', methods=['POST'],
