@@ -32,7 +32,7 @@ def amenity_by_id(amenity_id):
                  strict_slashes=False)
 def del_amenity(amenity_id):
     """ function that delete an amenity """
-    amenity = storage.get("State", amenity_id)
+    amenity = storage.get("Amenity", amenity_id)
     if amenity:
         amenity.delete()
         storage.save()
@@ -41,7 +41,7 @@ def del_amenity(amenity_id):
 
 
 @app_views.route("/amenities/", methods=['POST'], strict_slashes=False)
-def create_amenities():
+def create_amenity():
     """ function that creates a new amenity. """
     new_amenity = request.get_json()
     if not new_amenity:
@@ -58,13 +58,13 @@ def create_amenities():
 
 @app_views.route("/amenities/<amenities_id>", methods=['PUT'],
                  strict_slashes=False)
-def up_amenity(amenity_id):
+def up_amenity(amenities_id):
     """ function that updates a amenity. """
     amenity_up = request.get_json()
     if not amenity_up:
         abort(400, "Not a JSON")
 
-    obj_ = storage.get(Amenity, amenity_id)
+    obj_ = storage.get(Amenity, amenities_id)
     if obj_:
         ignored_attr = ["id", "created_at", "updated_at"]
         for key, value in amenity_up.items():
