@@ -21,8 +21,9 @@ def get_cities(state_id=None):
     state = storage.get(State, state_id)
     if state:
         cities = []
-        for city in state.cities:
-            cities.append(city.to_dict())
+        for city in storage.all('City').values():
+            if state_id == city.to_dict()['state_id']:
+                cities.append(city.to_dict())
         return jsonify(cities)
     else:
         abort(404)
@@ -52,10 +53,7 @@ def post_city(state_id=None):
             data['state_id'] = state_id
             new_city = City(**data)
             storage.new(new_city)
-            try:
-                storage.save()
-            except:
-                abort(404)
+            storage.save()
             return new_city.to_dict(), 201
         else:
             abort(400, {'Missing name'})
@@ -74,6 +72,7 @@ def get_city(city_id=None):
     Returns:
         City data in json format
     """
+
     city = storage.get(City, city_id)
     if city:
         return city.to_dict()
