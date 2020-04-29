@@ -43,21 +43,25 @@ def post_city(state_id=None):
         The data of the new city with status code 201
     """
 
-    try:
-        req_body = request.get_json()
-    except:
-        return 'Not a JSON', 400
-    if 'name' in req_body.keys():
-        req_body['state_id'] = state_id
-        new_city = City(**req_body)
-        storage.new(new_city)
+    state = storage.get(State, state_id)
+    if state:
         try:
-            storage.save()
+            data = request.get_json()
         except:
-            abort(404)
-        return jsonify(new_city.to_dict()), 201
+            abort(400, 'Not a JSON')
+        if 'name' in data.keys():
+            data['state_id'] = state_id
+            new_city = City(**data)
+            storage.new(new_city)
+            try:
+                storage.save()
+            except:
+                abort(404)
+            return jsonify(new_city.to_dict()), 201
+        else:
+            abort(400, 'Missing name')
     else:
-        return 'Missing name', 404
+        abort(404)
 
 
 @app_views.route('/cities/<city_id>', methods=['GET'],
@@ -113,17 +117,19 @@ def put_city(city_id=None):
         Returns:
             The data of the updated city with status code 200
     """
-    try:
-        req_body = request.get_json()
-    except:
-        return 'Not a JSON', 400
+
     city = storage.get(City, city_id)
     if city:
+        try:
+            req_body = request.get_json()
+        except:
+            abort(400, 'Not a JSON')
         keys_ignore = ['id', 'state_id', 'created_at', 'updated_at']
         for key in req_body.keys():
             if key not in keys_ignore:
                 setattr(city, key, req_body[key])
         storage.save()
-        return jsonify(city.to_dict())
+        return jsonify(city.to_dict())        
+        return 'ok'
     else:
         abort(404)
