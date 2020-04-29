@@ -105,8 +105,8 @@ def post_review(place_id=None):
                  strict_slashes=False)
 def put_review(review_id=None):
     """
-        Takes an id, queries the storage for a review with that id and if found,
-        updates it with the info in the body
+        Takes an id, queries the storage for a review with that id,
+        if found, updates it with the info in the body
 
         Args:
             review_id: id of the review to update
