@@ -125,6 +125,6 @@ def put_city(city_id=None):
             if key not in keys_ignore:
                 setattr(city, key, data[key])
         city.save()
-        return city.to_dict()
+        return make_response(jsonify(city.to_dict(), 200)
     else:
         abort(404)
