@@ -56,7 +56,7 @@ def post_city(state_id=None):
                 storage.save()
             except:
                 abort(404)
-            return jsonify(new_city.to_dict()), 201
+            return new_city.to_dict(), 201
         else:
             abort(400, 'Missing name')
     else:
@@ -76,7 +76,7 @@ def get_city(city_id=None):
     """
     city = storage.get(City, city_id)
     if city:
-        return jsonify(city.to_dict())
+        return city.to_dict()
     else:
         abort(404)
 
@@ -97,7 +97,7 @@ def del_city(city_id=None):
     if city:
         storage.delete(city)
         storage.save()
-        return jsonify({})
+        return {}
     else:
         abort(404)
 
@@ -127,7 +127,7 @@ def put_city(city_id=None):
             if key not in keys_ignore:
                 setattr(city, key, req_body[key])
         storage.save()
-        return jsonify(city.to_dict())
+        return city.to_dict()
         return 'ok'
     else:
         abort(404)
