@@ -7,8 +7,7 @@ from models.city import City
 from models import storage
 
 
-@app_views.route('/states/<state_id>/cities', methods=['GET'],
-                 strict_slashes=False)
+@app_views.route('/states/<state_id>/cities', strict_slashes=False)
 def get_cities(state_id=None):
     """
     Takes a state id and queries storare for cities that belong to that state
@@ -64,8 +63,7 @@ def post_city(state_id=None):
         abort(404)
 
 
-@app_views.route('/cities/<city_id>', methods=['GET'],
-                 strict_slashes=False)
+@app_views.route('/cities/<city_id>', strict_slashes=False)
 def get_city(city_id=None):
     """
     Takes an id and queries storage for a city with that id
@@ -129,7 +127,7 @@ def put_city(city_id=None):
             if key not in keys_ignore:
                 setattr(city, key, req_body[key])
         storage.save()
-        return jsonify(city.to_dict())        
+        return jsonify(city.to_dict())
         return 'ok'
     else:
         abort(404)
