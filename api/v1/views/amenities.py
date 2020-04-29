@@ -63,7 +63,7 @@ def up_amenity(amenity_id):
     if not amenity:
         abort(400, "Not a JSON")
 
-    obj = storage.get("Amenity", amenities_id)
+    obj = storage.get("Amenity", amenity_id)
     if obj:
         no_mod = ["id", "created_at", "updated_at"]
         for key, value in amenity.items():
