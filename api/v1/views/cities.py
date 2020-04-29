@@ -18,7 +18,7 @@ def get_cities(state_id=None):
     Returns:
         list of cities by state in json format
     """
-    
+
     state = storage.get(State, state_id)
     if not state:
         abort(404)
@@ -56,8 +56,6 @@ def post_city(state_id=None):
     storage.new(new_city)
     storage.save()
     return make_response(jsonify(new_city.to_dict()), 201)
-        
-        
 
 
 @app_views.route('/cities/<city_id>', strict_slashes=False)
@@ -125,4 +123,3 @@ def put_city(city_id=None):
             setattr(city, key, data[key])
     city.save()
     return make_response(jsonify(city.to_dict()), 200)
-        
