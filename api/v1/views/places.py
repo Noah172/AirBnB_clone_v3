@@ -10,6 +10,9 @@ from models.place import Place
                  strict_slashes=False)
 def places(city_id):
     """ function that get all places in cities. """
+    city = storage.get("City", city_id)
+    if city is None:
+        abort(404)
     places = []
     all_ = storage.all(Place).values()
     for place in all_:
