@@ -47,7 +47,7 @@ def post_city(state_id=None):
         try:
             data = request.get_json()
         except:
-            abort(400, 'Not a JSON')
+            abort(400, {'Not a JSON'})
         if 'name' in data.keys():
             data['state_id'] = state_id
             new_city = City(**data)
@@ -58,7 +58,7 @@ def post_city(state_id=None):
                 abort(404)
             return new_city.to_dict(), 201
         else:
-            abort(400, 'Missing name')
+            abort(400, {'Missing name'})
     else:
         abort(404)
 
@@ -121,7 +121,7 @@ def put_city(city_id=None):
         try:
             req_body = request.get_json()
         except:
-            abort(400, 'Not a JSON')
+            abort(400, {'Not a JSON'})
         keys_ignore = ['id', 'state_id', 'created_at', 'updated_at']
         for key in req_body.keys():
             if key not in keys_ignore:
