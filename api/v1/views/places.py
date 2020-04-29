@@ -11,7 +11,7 @@ from models.place import Place
 def places(city_id):
     """ function that get all places in cities. """
     places = []
-    all_ = storage.all(Amenity).values()
+    all_ = storage.all(Place).values()
     for place in all_:
         places.append(place.to_dict())
     return jsonify(places)
