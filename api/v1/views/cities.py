@@ -71,7 +71,7 @@ def get_city(city_id=None):
     Returns:
         City data in json format
     """
-    
+
     city = storage.get(City, city_id)
     if city:
         return city.to_dict()
