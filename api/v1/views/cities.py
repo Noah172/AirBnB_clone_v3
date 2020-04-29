@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """View for the city RestFul API actions"""
 from api.v1.views import app_views
-from flask import jsonify, abort, request
+from flask import jsonify, abort, request, make_response
 from models.state import State
 from models.city import City
 from models import storage
@@ -47,15 +47,15 @@ def post_city(state_id=None):
         try:
             data = request.get_json()
         except:
-            abort(400, {'Not a JSON'})
+            abort(400, 'Not a JSON')
         if 'name' in data.keys():
             data['state_id'] = state_id
             new_city = City(**data)
             storage.new(new_city)
             storage.save()
-            return new_city.to_dict(), 201
+            return make_response(jsonify(new_city.to_dict()), 201)
         else:
-            abort(400, {'Missing name'})
+            abort(400, 'Missing name')
     else:
         abort(404)
 
@@ -74,7 +74,7 @@ def get_city(city_id=None):
 
     city = storage.get(City, city_id)
     if city:
-        return city.to_dict()
+        return jsonify(city.to_dict())
     else:
         abort(404)
 
@@ -95,7 +95,7 @@ def del_city(city_id=None):
     if city:
         city.delete()
         storage.save()
-        return {}
+        return make_response(jsonify({}), 200)
     else:
         abort(404)
 
@@ -117,15 +117,14 @@ def put_city(city_id=None):
     city = storage.get(City, city_id)
     if city:
         try:
-            req_body = request.get_json()
+            data = request.get_json()
         except:
-            abort(400, {'Not a JSON'})
+            abort(400, 'Not a JSON')
         keys_ignore = ['id', 'state_id', 'created_at', 'updated_at']
-        for key in req_body.keys():
+        for key in data.keys():
             if key not in keys_ignore:
-                setattr(city, key, req_body[key])
+                setattr(city, key, data[key])
         city.save()
         return city.to_dict()
-        return 'ok'
     else:
         abort(404)
