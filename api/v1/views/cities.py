@@ -95,7 +95,7 @@ def del_city(city_id=None):
     """
     city = storage.get(City, city_id)
     if city:
-        storage.delete(city)
+        city.delete()
         storage.save()
         return {}
     else:
@@ -126,7 +126,7 @@ def put_city(city_id=None):
         for key in req_body.keys():
             if key not in keys_ignore:
                 setattr(city, key, req_body[key])
-        storage.save()
+        city.save()
         return city.to_dict()
         return 'ok'
     else:
