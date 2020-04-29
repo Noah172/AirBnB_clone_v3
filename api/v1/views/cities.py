@@ -18,6 +18,7 @@ def get_cities(state_id=None):
     Returns:
         list of cities by state in json format
     """
+    
     state = storage.get(State, state_id)
     if not state:
         abort(404)
@@ -43,21 +44,20 @@ def post_city(state_id=None):
     """
 
     state = storage.get(State, state_id)
-    if state:
-        try:
-            data = request.get_json()
-        except:
-            abort(400, 'Not a JSON')
-        if 'name' in data.keys():
-            data['state_id'] = state_id
-            new_city = City(**data)
-            storage.new(new_city)
-            storage.save()
-            return make_response(jsonify(new_city.to_dict()), 201)
-        else:
-            abort(400, 'Missing name')
-    else:
+    if not state:
         abort(404)
+    data = request.get_json()
+    if not data:
+        abort(400, 'Not a JSON')
+    if 'name' not in data.keys():
+        abort(400, 'Missing name')
+    data['state_id'] = state_id
+    new_city = City(**data)
+    storage.new(new_city)
+    storage.save()
+    return make_response(jsonify(new_city.to_dict()), 201)
+        
+        
 
 
 @app_views.route('/cities/<city_id>', strict_slashes=False)
@@ -73,10 +73,9 @@ def get_city(city_id=None):
     """
 
     city = storage.get(City, city_id)
-    if city:
-        return jsonify(city.to_dict())
-    else:
+    if not city:
         abort(404)
+    return jsonify(city.to_dict())
 
 
 @app_views.route('/cities/<city_id>', methods=['DELETE'],
@@ -91,13 +90,13 @@ def del_city(city_id=None):
     Returns:
         empty json with status code 200
     """
+
     city = storage.get(City, city_id)
-    if city:
-        city.delete()
-        storage.save()
-        return make_response(jsonify({}), 200)
-    else:
+    if not city:
         abort(404)
+    city.delete()
+    storage.save()
+    return make_response(jsonify({}), 200)
 
 
 @app_views.route('/cities/<city_id>', methods=['PUT'],
@@ -115,16 +114,15 @@ def put_city(city_id=None):
     """
 
     city = storage.get(City, city_id)
-    if city:
-        try:
-            data = request.get_json()
-        except:
-            abort(400, 'Not a JSON')
-        keys_ignore = ['id', 'state_id', 'created_at', 'updated_at']
-        for key in data.keys():
-            if key not in keys_ignore:
-                setattr(city, key, data[key])
-        city.save()
-        return make_response(jsonify(city.to_dict()), 200)
-    else:
+    if not city:
         abort(404)
+    data = request.get_json()
+    if not data:
+        abort(400, 'Not a JSON')
+    keys_ignore = ['id', 'state_id', 'created_at', 'updated_at']
+    for key in data.keys():
+        if key not in keys_ignore:
+            setattr(city, key, data[key])
+    city.save()
+    return make_response(jsonify(city.to_dict()), 200)
+        
