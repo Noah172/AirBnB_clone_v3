@@ -60,11 +60,11 @@ def create_place(city_id):
     if not city:
         abort(404)
 
-        place = Place(**new_place)
-        setattr(place, "city_id", city_id)
-        storage.new(place)
-        storage.save()
-        return make_response(jsonify(place.to_dict()), 201)
+    place = Place(**new_place)
+    setattr(place, "city_id", city_id)
+    storage.new(place)
+    storage.save()
+    return make_response(jsonify(place.to_dict()), 201)
 
 
 @app_views.route("/places/<place_id>", methods=['PUT'],
