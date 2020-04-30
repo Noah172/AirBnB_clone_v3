@@ -83,7 +83,7 @@ def up_places(place_id):
                 setattr(obj_, key, value)
 
             obj_.save()
+            storage.save()
         return make_response(jsonify(obj_.to_dict()), 200)
 
     abort(404)
-    storage.save()
