@@ -59,7 +59,7 @@ def create_place(city_id):
 
     if not city:
         abort(404)
-    
+
         place = Place(**new_place)
         setattr(place, "city_id", city_id)
         storage.new(place)
